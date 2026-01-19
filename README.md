@@ -8,8 +8,6 @@ Run Stationeers dedicated server in a container. Optionally includes helm chart 
 
 The processes within the container do **NOT** run as root. Everything runs as the user steam (gid:10000/uid:10000 by default). If you exec into the container, you will drop into `/home/steam` as the steam user. Stationeers will be installed to `/home/steam/stationeers`. Any persistent volumes should be mounted to `/home/steam/stationeers` and be owned by 10000:10000. If you need to run as a different GID/UID you can build your own image and set the build arguments for CONTAINER_GID and CONTAINER_UID to specify to new values.
 
-Once your server is running, to configure it further you need to add it to your server manager in game.
-
 ### Requirements
 
 - 16 or more Gigabytes of RAM. The server will load with less, but will run out of RAM quickly, potentially leading to instability or crashes.
