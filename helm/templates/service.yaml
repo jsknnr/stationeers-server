@@ -23,6 +23,13 @@ spec:
     {{- if eq .Values.service.type "NodePort" }}
     nodePort: {{ .Values.config.gamePort| int }}
     {{- end }}
+  - name: game-port-tcp
+    port: {{ .Values.config.gamePort | int }}
+    targetPort: game-port-tcp
+    protocol: TCP
+    {{- if eq .Values.service.type "NodePort" }}
+    nodePort: {{ .Values.config.gamePort| int }}
+    {{- end }}
   - name: update-port
     port: {{ .Values.config.updatePort | int }}
     targetPort: update-port

@@ -72,6 +72,9 @@ spec:
         - name: game-port
           containerPort: {{ .Values.config.gamePort | int }}
           protocol: UDP
+        - name: game-port-tcp
+          containerPort: {{ .Values.config.gamePort | int }}
+          protocol: TCP
         - name: update-port
           containerPort: {{ .Values.config.updatePort | int }}
           protocol: UDP
