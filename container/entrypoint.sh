@@ -83,7 +83,8 @@ cmd=(
   -file start ContainerStation "${WORLD_NAME}" "${DIFFICULTY}" "${START_CONDITION}" "${LOCATION_ID}"
   -logFile "${LOG_FILE}"
   -settings
-  LocalIpAddress "0.0.0.0"
+  LocalIpAddress 0.0.0.0
+  UseSteamP2P false
   UPNPEnabled "${UPNP_ENABLED}"
   StartLocalHost "${START_LOCALHOST}"
   ServerVisible "${SERVER_VISIBLE}"
