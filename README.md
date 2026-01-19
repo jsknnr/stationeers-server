@@ -53,7 +53,7 @@ Once your server is running, to configure it further you need to add it to your 
 | Vulcan | `Vulcan` | Creative, Easy, Normal, Stationeer | VulcanDefault, VulcanDefaultCommunity, VulcanBrutal, VulcanBrutalCommunity | VulcanSpawnVestaValley, VulcanSpawnEtnasFury, VulcanSpawnIxionsDemise, VulcanSpawnTitusReach, VulcanSpawnRoundRobin |
 | Venus | `Venus` | Creative, Easy, Normal, Stationeer | VenusDefault, VenusDefaultCommunity, VulcanBrutal, VulcanBrutalCommunity | VenusSpawnGaiaValley, VenusSpawnDaisyValley, VenusSpawnFaithValley, VenusSpawnDuskValley, VenusSpawnRoundRobin |
 
-https://stationeers-wiki.com/Dedicated_Server_Guide
+further documentation: https://stationeers-wiki.com/Dedicated_Server_Guide
 
 ### Docker
 
