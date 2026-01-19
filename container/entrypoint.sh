@@ -59,6 +59,7 @@ echo "Game Port: ${GAME_PORT} UDP"
 echo "Update Port: ${UPDATE_PORT} UDP"
 echo "Server Name: ${SERVER_NAME}"
 echo "Max Players: ${SERVER_MAX_PLAYERS}"
+echo "Server Visible: ${SERVER_VISIBLE}"
 echo "World: ${WORLD_NAME}"
 echo "Start Location: ${LOCATION_ID}"
 echo "Difficulty: ${DIFFICULTY}"
@@ -83,7 +84,7 @@ cmd=(
   -settings
   UPNPEnabled "${UPNP_ENABLED}"
   StartLocalHost true
-  ServerVisible true
+  ServerVisible "${SERVER_VISIBLE}"
   GamePort "${GAME_PORT}"
   UpdatePort "${UPDATE_PORT}"
   ServerName "${SERVER_NAME}"
@@ -97,7 +98,7 @@ if [[ -n "${SERVER_PASSWORD:-}" ]]; then
   cmd+=(ServerPassword "${SERVER_PASSWORD}")
 fi
 
-# Decide on one env var name and stick to it (example uses SERVER_AUTH_SECRET)
+# Decide on one env var name and stick to it
 if [[ -n "${SERVER_AUTH_SECRET:-}" ]]; then
   cmd+=(ServerAuthSecret "${SERVER_AUTH_SECRET}")
 fi
@@ -108,7 +109,7 @@ stationeers_pid="$!"
 
 echo "$(timestamp) INFO: Stationeers started with pid ${stationeers_pid}"
 
-# Hold until it exits or we get a signal (trap calls wait too)
+# Hold until it exits or we get a signal
 wait "${stationeers_pid}" || true
 
 echo "$(timestamp) INFO: Shutdown complete."

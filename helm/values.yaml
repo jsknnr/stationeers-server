@@ -19,8 +19,9 @@ volumes:
   storageClassName: ""
 
 config:
-  gamePort: "27015"
-  updateport: "27016"
+  gamePort: "27016"
+  updateport: "27015"
+  serverVisible: "true"
   upnpEnabled: "false"
   serverName: "Containerized Stationeers"
   serverPassword: ""

@@ -19,17 +19,18 @@ Once your server is running, to configure it further you need to add it to your 
 
 | Port | Protocol | Default |
 | ---- | -------- | ------- |
-| Game Port | UDP | 27015 |
-| Update Port | UDP | 27016 |
+| Game Port | UDP | 27016 |
+| Update Port | UDP | 27015 |
 
 ### Environment Variables
 
 | Name | Description | Default | Required |
 | ---- | ----------- | ------- | -------- |
-| GAME_PORT | Port for server connections. | 27015 | False |
-| UPDATE_PORT | Port for query of server. | 27016 | False |
+| GAME_PORT | Port for server connections. | 27016 | False |
+| UPDATE_PORT | Port for query of server. | 27015 | False |
 | UPNP_ENABLED | Enable or disable UPNP support | false | False |
 | SERVER_NAME | Name of server | "Containerized Stationeers" | False |
+| SERVER_VISIBLE | Does server show up on in-game list | true | False |
 | SERVER_PASSWORD | Password to join | None | False |
 | SERVER_AUTH_SECRET | Admin paspsword | None | False |
 | SERVER_MAX_PLAYERS | Max players for server | 5 (1-20) | False |
@@ -66,8 +67,8 @@ docker run \
   --mount type=volume,source=stationeers-persistent-data,target=/home/steam/stationeers \
   --publish 27015:27015/udp \
   --publish 27016:27016/udp \
-  --env=GAME_PORT=27015 \
-  --env=UPDATE_PORT=27016 \
+  --env=GAME_PORT=27016 \
+  --env=UPDATE_PORT=27015 \
   sknnr/stationeers-server:latest
 ```
 
@@ -95,8 +96,8 @@ services:
       - "27015:27015/udp"
       - "27016:27016/udp"
     environment:
-      GAME_PORT: "27015"
-      UPDATE_PORT: "27016"
+      GAME_PORT: "27016"
+      UPDATE_PORT: "27015"
     volumes:
       - stationeers-persistent-data:/home/steam/stationeers
     stop_grace_period: 90s
@@ -117,8 +118,8 @@ podman run \
   --mount type=volume,source=stationeers-persistent-data,target=/home/steam/stationeers \
   --publish 27015:27015/udp \
   --publish 27016:27016/udp \
-  --env=GAME_PORT=27015 \
-  --env=UPDATE_PORT=27016 \
+  --env=GAME_PORT=27016 \
+  --env=UPDATE_PORT=27015 \
   docker.io/sknnr/stationeers-server:latest
 ```
 

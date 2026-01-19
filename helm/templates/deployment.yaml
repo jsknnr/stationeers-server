@@ -38,6 +38,8 @@ spec:
           value: {{ .Values.config.updatePort | squote }}
         - name: UPNP_ENABLED
           value: {{ .Values.config.upnpEnabled | squote }}
+        - name: SERVER_VISIBLE
+          value: {{ .Values.config.serverVisible | squote }}
         - name: SERVER_NAME
           value: {{ .Values.config.serverName | squote }}
         {{- if .Values.config.serverPasswowrd }}

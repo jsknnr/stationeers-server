@@ -33,11 +33,12 @@ ENV STATIONEERS_PATH="/home/steam/stationeers" \
     STEAM_SDK64_PATH="/home/steam/.steam/sdk64" \
     STEAM_APP_ID="600760"
 
-ENV GAME_PORT="27015" \
-    UPDATE_PORT="27016" \
+ENV GAME_PORT="27016" \
+    UPDATE_PORT="27015" \
     UPNP_ENABLED="false" \
     SERVER_NAME="Containerized Stationeers" \
     SERVER_MAX_PLAYERS="5" \
+    SERVER_VISIBLE="true" \
     AUTO_SAVE="true" \
     SAVE_INTERVAL="500" \
     AUTO_PAUSE_SERVER="true" \
