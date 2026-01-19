@@ -1,5 +1,5 @@
 # ---- builder: fetch and unpack steamcmd ----
-FROM debian:12-slim AS steamcmd-builder
+FROM debian:13-slim AS steamcmd-builder
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV STEAMCMD_PATH=/home/steam/steamcmd
@@ -15,7 +15,7 @@ RUN set -eux; \
       | tar -xzf - -C "${STEAMCMD_PATH}"
 
 # ---- final runtime image ----
-FROM debian:12-slim
+FROM debian:13-slim
 
 ARG CONTAINER_GID=10000
 ARG CONTAINER_UID=10000
@@ -58,10 +58,7 @@ RUN set -eux; \
     apt-get install -y --no-install-recommends \
       ca-certificates \
       lib32gcc-s1 \
-      locales \
-      iproute2 \
-      procps \
-      tcpdump; \
+      locales; \
     echo "en_US.UTF-8 UTF-8" > /etc/locale.gen; \
     locale-gen; \
     rm -rf /var/lib/apt/lists/*

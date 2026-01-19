@@ -1,6 +1,6 @@
 apiVersion: v1
 name: stationeers-server
-version: 1.0.3
+version: 1.0.4
 description: Stationeers dedicated server.
 keywords:
 - game
