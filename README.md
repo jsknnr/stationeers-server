@@ -27,7 +27,7 @@ The processes within the container do **NOT** run as root. Everything runs as th
 | GAME_PORT | Port for server connections. | 27016 | False |
 | UPDATE_PORT | Port for query of server. | 27015 | False |
 | UPNP_ENABLED | Enable or disable UPNP support | false | False |
-| START_LOCALHOST | Start server listening on loopback | false | False |
+| START_LOCALHOST | Start server listening | true | False |
 | SERVER_NAME | Name of server | "Containerized Stationeers" | False |
 | SERVER_VISIBLE | Does server show up on in-game list | true | False |
 | SERVER_PASSWORD | Password to join | None | False |
