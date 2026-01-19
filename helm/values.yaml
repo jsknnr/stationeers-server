@@ -20,7 +20,7 @@ volumes:
 
 config:
   gamePort: "27016"
-  updateport: "27015"
+  updatePort: "27015"
   serverVisible: "true"
   upnpEnabled: "false"
   serverName: "Containerized Stationeers"
