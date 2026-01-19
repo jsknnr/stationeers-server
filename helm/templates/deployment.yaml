@@ -77,7 +77,7 @@ spec:
           protocol: UDP
         volumeMounts:
         - name: data
-          mountPath: /home/stationeers
+          mountPath: /home/steam/stationeers
         securityContext:
           allowPrivilegeEscalation: false
       volumes:
