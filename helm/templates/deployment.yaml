@@ -40,9 +40,11 @@ spec:
           value: {{ .Values.config.upnpEnabled | squote }}
         - name: SERVER_VISIBLE
           value: {{ .Values.config.serverVisible | squote }}
+        - name: START_LOCALHOST
+          value: {{ .Values.config.startLocalhost | squote }}
         - name: SERVER_NAME
           value: {{ .Values.config.serverName | squote }}
-        {{- if .Values.config.serverPasswowrd }}
+        {{- if .Values.config.serverPassword }}
         - name: SERVER_PASSWORD
           value: {{ .Values.config.serverPassword | squote }}
         {{- end }}

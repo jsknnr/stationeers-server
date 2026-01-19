@@ -23,6 +23,7 @@ config:
   updatePort: "27015"
   serverVisible: "true"
   upnpEnabled: "false"
+  startLocalhost: "false"
   serverName: "Containerized Stationeers"
   serverPassword: ""
   serverAuthSecret: ""

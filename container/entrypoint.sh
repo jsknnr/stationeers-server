@@ -57,6 +57,7 @@ echo "Container Image Version: ${IMAGE_VERSION}"
 echo "UPNP Enabled: ${UPNP_ENABLED}"
 echo "Game Port: ${GAME_PORT} UDP"
 echo "Update Port: ${UPDATE_PORT} UDP"
+echo "Start Localhost: ${START_LOCALHOST}"
 echo "Server Name: ${SERVER_NAME}"
 echo "Max Players: ${SERVER_MAX_PLAYERS}"
 echo "Server Visible: ${SERVER_VISIBLE}"
@@ -83,7 +84,7 @@ cmd=(
   -logFile "${LOG_FILE}"
   -settings
   UPNPEnabled "${UPNP_ENABLED}"
-  StartLocalHost true
+  StartLocalHost "${START_LOCALHOST}"
   ServerVisible "${SERVER_VISIBLE}"
   GamePort "${GAME_PORT}"
   UpdatePort "${UPDATE_PORT}"
