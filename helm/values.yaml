@@ -1,0 +1,35 @@
+image:
+  repository: sknnr/stationeers-server
+  tag: latest
+  pullPolicy: Always
+
+service:
+  type: LoadBalancer
+  externalIPs: []
+  annotations: {}
+
+resources:
+  requests:
+    memory: 16G
+    cpu: 6.0
+
+volumes:
+  dataPVC:
+    size: 50Gi
+  storageClassName: ""
+
+config:
+  gamePort: "27015"
+  updateport: "27016"
+  upnpEnabled: "false"
+  serverName: "Containerized Stationeers"
+  serverPassword: ""
+  serverAuthSecret: ""
+  serverMaxPlayers: "5"
+  autoSave: "true"
+  saveInterval: "500"
+  autoPauseServer: "true"
+  worldName: "Lunar"
+  difficulty: "Normal"
+  startCondition: "DefaultStart"
+  locationId: "LunarSpawnCraterVesper"

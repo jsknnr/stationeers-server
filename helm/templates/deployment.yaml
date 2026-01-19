@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .Chart.Name }}"
+  labels:
+    app: "{{ .Chart.Name }}"
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+spec:
+  strategy:
+    type: Recreate
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "{{ .Chart.Name }}"
+      release: "{{ .Release.Name }}"
+  template:
+    metadata:
+      labels:
+        app: "{{ .Chart.Name }}"
+        release: "{{ .Release.Name }}"
+    spec:
+      securityContext:
+        runAsUser: 10000
+        runAsGroup: 10000
+        fsGroup: 10000
+      containers:
+      - name: "{{ .Chart.Name }}"
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: "{{ .Values.image.pullPolicy }}"
+        resources:
+{{ toYaml .Values.resources | indent 10 }}
+        env:
+        - name: GAME_PORT
+          value: {{ .Values.config.gamePort | squote }}
+        - name: UPDATE_PORT
+          value: {{ .Values.config.updatePort | squote }}
+        - name: UPNP_ENABLED
+          value: {{ .Values.config.upnpEnabled | squote }}
+        - name: SERVER_NAME
+          value: {{ .Values.config.serverName | squote }}
+        {{- if .Values.config.serverPasswowrd }}
+        - name: SERVER_PASSWORD
+          value: {{ .Values.config.serverPassword | squote }}
+        {{- end }}
+        {{- if .Values.config.serverAuthSecret }}
+        - name: SERVER_AUTH_SECRET
+          value: {{ .Values.config.serverAuthSecret | squote }}
+        {{- end }}
+        - name: SERVER_MAX_PLAYERS
+          value: {{ .Values.config.serverMaxPlayers | squote }}
+        - name: AUTO_SAVE
+          value: {{ .Values.config.autoSave | squote }}
+        - name: SAVE_INTERVAL
+          value: {{ .Values.config.saveInterval | squote }}
+        - name: AUTO_PAUSE_SERVER
+          value: {{ .Values.config.autoPauseServer | squote }}
+        - name: WORLD_NAME
+          value: {{ .Values.config.worldName | squote }}
+        - name: DIFFICULTY
+          value: {{ .Values.config.difficulty | squote }}
+        - name: START_CONDITION
+          value: {{ .Values.config.startCondition | squote }}
+        - name: LOCATION_ID
+          value: {{ .Values.config.locationId | squote }}
+        ports:
+        - name: game-port
+          containerPort: {{ .Values.config.gamePort | int }}
+          protocol: UDP
+        - name: update-port
+          containerPort: {{ .Values.config.updatePort | int }}
+          protocol: UDP
+        volumeMounts:
+        - name: data
+          mountPath: /home/stationeers
+        securityContext:
+          allowPrivilegeEscalation: false
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: "{{ .Chart.Name }}-data"

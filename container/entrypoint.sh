@@ -54,8 +54,9 @@ echo ""
 echo "$(timestamp) INFO: Launching Stationeers!"
 echo "--------------------------------------------------------------------------------"
 echo "Container Image Version: ${IMAGE_VERSION}"
-echo "Game Port: ${GAME_PORT}"
-echo "Update Port: ${UPDATE_PORT}"
+echo "UPNP Enabled: ${UPNP_ENABLED}"
+echo "Game Port: ${GAME_PORT} UDP"
+echo "Update Port: ${UPDATE_PORT} UDP"
 echo "Server Name: ${SERVER_NAME}"
 echo "Max Players: ${SERVER_MAX_PLAYERS}"
 echo "World: ${WORLD_NAME}"
@@ -71,7 +72,6 @@ echo ""
 # Initialize logging
 LOG_FILE="${STATIONEERS_PATH}/server.log"
 rm -f "${LOG_FILE}"
-touch "${LOG_FILE}"
 # Write to stdout
 ln -s /proc/1/fd/1 "${LOG_FILE}"
 
@@ -79,8 +79,9 @@ ln -s /proc/1/fd/1 "${LOG_FILE}"
 cmd=(
   "${STATIONEERS_PATH}/rocketstation_DedicatedServer.x86_64"
   -file start ContainerStation "${WORLD_NAME}" "${DIFFICULTY}" "${START_CONDITION}" "${LOCATION_ID}"
-  -logFile "${STATIONEERS_PATH}/server.log"
+  -logFile "${LOG_FILE}"
   -settings
+  UPNPEnabled "${UPNP_ENABLED}"
   StartLocalHost true
   ServerVisible true
   GamePort "${GAME_PORT}"

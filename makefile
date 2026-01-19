@@ -9,7 +9,7 @@ HASH := $(shell git rev-parse --short HEAD)
 # Buildah/Podman/Docker Options
 CONTAINER_NAME := stationeers-test
 VOLUME_NAME := stationeers-data
-BUILD_OPTS := -f ./container/Dockerfile
+BUILD_OPTS := -f ./container/Containerfile
 RUN_OPTS := --name $(CONTAINER_NAME) -d --mount type=volume,source=$(VOLUME_NAME),target=/home/steam/stationeers -p 27015:27015/udp -p 27016:27016/udp
 
 # Makefile targets

@@ -1,3 +1,20 @@
+# ---- builder: fetch and unpack steamcmd ----
+FROM debian:13-slim AS steamcmd-builder
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV STEAMCMD_PATH=/home/steam/steamcmd
+
+RUN set -eux; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends ca-certificates curl; \
+    rm -rf /var/lib/apt/lists/*
+
+RUN set -eux; \
+    mkdir -p "${STEAMCMD_PATH}"; \
+    curl -fsSL https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz \
+      | tar -xzf - -C "${STEAMCMD_PATH}"
+
+# ---- final runtime image ----
 FROM debian:13-slim
 
 ARG CONTAINER_GID=10000
@@ -6,58 +23,58 @@ ARG CONTAINER_UID=10000
 ARG MAINTAINER="https://github.com/jsknnr/stationeers-server"
 ARG IMAGE_VERSION="v1.0.0-devel"
 
-ENV DEBIAN_FRONTEND="noninteractive"
-ENV STATIONEERS_PATH="/home/steam/stationeers"
-ENV STEAMCMD_PATH="/home/steam/steamcmd"
-ENV STEAM_SDK64_PATH="/home/steam/.steam/sdk64"
-ENV STEAM_APP_ID="600760"
+ENV DEBIAN_FRONTEND=noninteractive
 
-ENV GAME_PORT="27016"
-ENV UPDATE_PORT="27015"
+ENV LANG=en_US.UTF-8 \
+    LC_ALL=en_US.UTF-8
 
-ENV SERVER_NAME="Containerized Stationeers"
-ENV SERVER_MAX_PLAYERS="5"
-ENV AUTO_SAVE="true"
-ENV SAVE_INTERVAL="500"
-ENV AUTO_PAUSE_SERVER="true"
-ENV WORLD_NAME="Lunar"
-ENV LOCATION_ID="LunarSpawnCraterVesper"
-ENV START_CONDITION="DefaultStart"
-ENV DIFFICULTY="Normal"
+ENV STATIONEERS_PATH="/home/steam/stationeers" \
+    STEAMCMD_PATH="/home/steam/steamcmd" \
+    STEAM_SDK64_PATH="/home/steam/.steam/sdk64" \
+    STEAM_APP_ID="600760"
 
-RUN groupadd -g ${CONTAINER_GID} steam \
-    && useradd -g ${CONTAINER_GID} -u ${CONTAINER_UID} -m steam \
-    && dpkg --add-architecture i386 \
-    && apt-get update \
-    && apt-get install -y \
-        ca-certificates \
-        curl \
-        lib32gcc-s1 \
-        locales \
-        procps \
-        vim \
-    && echo 'LANG="en_US.UTF-8"' > /etc/default/locale \
-    && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
-    && locale-gen \
-    && rm -rf /var/lib/apt/lists/* \
-    && apt-get clean \
-    && apt-get autoremove -y
+ENV GAME_PORT="27015" \
+    UPDATE_PORT="27016" \
+    UPNP_ENABLED="false" \
+    SERVER_NAME="Containerized Stationeers" \
+    SERVER_MAX_PLAYERS="5" \
+    AUTO_SAVE="true" \
+    SAVE_INTERVAL="500" \
+    AUTO_PAUSE_SERVER="true" \
+    WORLD_NAME="Lunar" \
+    LOCATION_ID="LunarSpawnCraterVesper" \
+    START_CONDITION="DefaultStart" \
+    DIFFICULTY="Normal"
+
+RUN set -eux; \
+    groupadd -g "${CONTAINER_GID}" steam; \
+    useradd -g "${CONTAINER_GID}" -u "${CONTAINER_UID}" -m steam
+
+RUN set -eux; \
+    dpkg --add-architecture i386; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends \
+      ca-certificates \
+      lib32gcc-s1 \
+      locales; \
+    echo "en_US.UTF-8 UTF-8" > /etc/locale.gen; \
+    locale-gen; \
+    rm -rf /var/lib/apt/lists/*
+
+COPY --from=steamcmd-builder --chown=steam:steam /home/steam/steamcmd /home/steam/steamcmd
+
+COPY --chown=steam:steam entrypoint.sh /home/steam/entrypoint.sh
 
 USER steam
 
-COPY entrypoint.sh /home/steam/entrypoint.sh
+RUN set -eux; \
+    mkdir -p "${STATIONEERS_PATH}" "${STEAM_SDK64_PATH}"; \
+    chmod +x /home/steam/entrypoint.sh; \
+    "${STEAMCMD_PATH}/steamcmd.sh" +quit; \
+    cp "${STEAMCMD_PATH}/linux64/steamclient.so" "${STEAM_SDK64_PATH}/steamclient.so"; \
+    echo "${IMAGE_VERSION}" > /home/steam/image_version; \
+    echo "${MAINTAINER}" > /home/steam/image_maintainer; \
+    echo "${CONTAINER_UID}:${CONTAINER_GID}" > /home/steam/expected_filesystem_permissions
 
-RUN mkdir -p ${STATIONEERS_PATH} \
-    && mkdir -p ${STEAMCMD_PATH} \
-    && curl -sqL https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz | tar zxvf - -C ${STEAMCMD_PATH} \
-    && chmod +x ${STEAMCMD_PATH}/steamcmd.sh \
-    && ${STEAMCMD_PATH}/steamcmd.sh +quit \
-    && mkdir -p ${STEAM_SDK64_PATH} \
-    && cp ${STEAMCMD_PATH}/linux64/steamclient.so ${STEAM_SDK64_PATH}/steamclient.so \
-    && echo "${IMAGE_VERSION}" > /home/steam/image_version \
-    && echo "${MAINTAINER}" > /home/steam/image_maintainer \
-    && echo "${CONTAINER_UID}:${CONTAINER_GID}" > /home/steam/expected_filesystem_permissions
- 
 WORKDIR /home/steam
-
-CMD ["/home/steam/entrypoint.sh"]
+ENTRYPOINT ["/home/steam/entrypoint.sh"]
