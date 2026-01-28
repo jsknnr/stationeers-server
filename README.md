@@ -144,6 +144,9 @@ helm install stationeers jsknnr/stationeers-server --values myvalues.yaml
 
 ## FAQ
 
+**Q:** My server keeps failing to update with error `state is 0x6 after update job.` from steam
+**A:** The steam app manifest is in a broken state and you will need to delete the manifest. I am not sure why this happens. From your storage volume: `rm steamapps/appmanifest_600760.acf` and then restart the container.
+
 **Q:** Can you change and or make the user and group IDs configurable? \
 **A:** Short answer, no I will not. Longer answer, for security reasons it is best that containers have UID/GIDs at or above 10000 to avoid collision with container host UID/GIDs. To make this configurable, the container would have to start as root and then later change to the desired user... this is also a security concern. If you *really* need to change this, just take my repo and build your own image with IDs you prefer. Just change the build args in the Containerfile.
 
