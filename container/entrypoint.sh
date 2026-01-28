@@ -44,8 +44,16 @@ if ! "${STEAMCMD_PATH}/steamcmd.sh" \
     +login anonymous \
     +app_update "${STEAM_APP_ID}" validate \
     +quit; then
-  echo "$(timestamp) ERROR: steamcmd was unable to successfully initialize and update Stationeers"
-  exit 1
+  echo "$(timestamp) WARN: steamcmd update failed; removing appmanifest and retrying"
+  rm -f "${STATIONEERS_PATH}/steamapps/appmanifest_${STEAM_APP_ID}.acf"
+  if ! "${STEAMCMD_PATH}/steamcmd.sh" \
+      +force_install_dir "${STATIONEERS_PATH}" \
+      +login anonymous \
+      +app_update "${STEAM_APP_ID}" validate \
+      +quit; then
+    echo "$(timestamp) ERROR: steamcmd was unable to successfully initialize and update Stationeers"
+    exit 1
+  fi
 fi
 echo ""
 echo "$(timestamp) INFO: steamcmd update of Stationeers successful"
